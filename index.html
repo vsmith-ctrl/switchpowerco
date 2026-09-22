@@ -3,19 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Switch Power Co — Solar sales team hiring in California</title>
-<meta name="description" content="Switch Power Co is a door-to-door solar and storage sales team in California and a sales partner of Continuum. We train reps on the door, promote on results, and we're hiring.">
+<title>Switch — Solar sales team hiring in California</title>
+<meta name="description" content="Switch is a door-to-door solar and storage sales team in California and a sales partner of Continuum. We train reps on the door, promote on results, and we're hiring.">
 <link rel="canonical" href="https://switchpowerco.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://switchpowerco.com/">
-<meta property="og:title" content="Switch Power Co — Solar sales team hiring in California">
+<meta property="og:title" content="Switch — Solar sales team hiring in California">
 <meta property="og:description" content="A door-to-door solar and storage sales team in California. Sales partner of Continuum. We're hiring reps.">
 <meta property="og:image" content="https://switchpowerco.com/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;800&display=swap">
+<link rel="preload" href="assets/fonts/figtree-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -23,8 +21,8 @@
 
 <header class="nav">
   <div class="wrap nav__inner">
-    <a class="nav__logo" href="/" aria-label="Switch Power Co, home">
-      <img src="assets/logo-light.png" alt="Switch Power Co" width="1411" height="370">
+    <a class="nav__logo" href="/" aria-label="Switch, home">
+      <img src="assets/logo-light.png" alt="Switch" width="1411" height="370">
     </a>
     <nav class="nav__links" aria-label="Main">
       <a class="nav__link" href="homeowners.html">For homeowners</a>
@@ -55,7 +53,7 @@
         </div>
       </div>
 
-      <p class="hero__sub">Switch Power Co is a door-to-door solar and storage sales team in California, and a sales partner of Continuum. We are hiring reps.</p>
+      <p class="hero__sub">Switch is a door-to-door solar and storage sales team in California, and a sales partner of Continuum. We are hiring reps.</p>
 
       <div class="actions">
         <a class="btn btn--volt" href="#apply">Apply to join</a>
@@ -150,14 +148,16 @@
   <section class="slab slab--ink partner">
     <div class="wrap">
       <h2 class="h2">We are a sales partner of Continuum</h2>
-      <p class="lede lede--ink">Switch Power Co and Continuum are two separate companies. We sell. They build. Continuum is a California-based solar and storage EPC — engineering, procurement and construction — with more than twenty years behind them, and they are the ones who design, permit, install and service every system we write.</p>
+      <p class="lede lede--ink">Switch and Continuum are two separate companies. We sell. They build. Continuum is a California-based solar and storage EPC — engineering, procurement and construction — with more than twenty years behind them, and they are the ones who design, permit, install and service every system we write.</p>
 
       <div class="compare">
         <div class="compare__col">
-          <h3 class="compare__h">Switch Power Co</h3>
+          <img class="compare__mark compare__mark--switch" src="assets/logo-light.png" alt="Switch" width="1411" height="370">
+          <h3 class="compare__h">Switch</h3>
           <p>The doors and the conversation. We knock, we run the appointment, we design the system and we write the deal.</p>
         </div>
         <div class="compare__col compare__col--now">
+          <img class="compare__mark" src="assets/continuum-light.png" alt="Powered by Continuum" width="1231" height="225">
           <h3 class="compare__h">Continuum</h3>
           <p>Everything after the signature. Engineering, permitting, equipment, installation, inspection, and service for as long as the system is on the roof.</p>
         </div>
@@ -222,9 +222,9 @@
       <div class="actions">
         <!-- TODO: add a "Text us" button here once there is a real number:
              <a class="btn btn--outline-ink" href="tel:+1XXXXXXXXXX">Text us</a> -->
-        <a class="btn btn--ink" href="mailto:careers@switchpowerco.com?subject=Joining%20the%20Switch%20Power%20Co%20team">Email the team</a>
+        <a class="btn btn--ink" href="mailto:careers@switchpowerco.com?subject=Joining%20the%20Switch%20team">Email the team</a>
       </div>
-      <p class="fineprint fineprint--volt">Switch Power Co, California. Sales partner of Continuum.</p>
+      <p class="fineprint fineprint--volt">Switch, California. Sales partner of Continuum.</p>
     </div>
   </section>
 
@@ -232,10 +232,20 @@
 
 <footer class="slab slab--ink foot">
   <div class="wrap foot__inner">
-    <img class="foot__logo" src="assets/logo-light.png" alt="Switch Power Co" width="1411" height="370">
-    <p class="foot__meta">Solar and storage sales across California. Sales partner of Continuum.<br>
-    <a class="foot__link" href="homeowners.html">Homeowner? Start here.</a><br>
-    <span class="foot__copy">&copy; <span id="year">2026</span> Switch Power Co. All rights reserved.</span></p>
+    <div class="foot__brand">
+      <img class="foot__logo" src="assets/logo-light.png" alt="Switch" width="1411" height="370">
+      <!-- Continuum's approved Color/Reverse lock-up. The brand guide forbids
+           stretching, recolouring or recreating it, and "POWERED BY" is part of
+           the mark. Kept deliberately smaller than the Switch wordmark. -->
+      <div class="foot__partner">
+        <p class="foot__partner-label">Powered by Continuum</p>
+        <img class="foot__partner-logo" src="assets/continuum-light.png" alt="Continuum" width="1231" height="225">
+      </div>
+    </div>
+    <p class="foot__meta">Solar and storage sales across California.<br>
+    Systems are engineered, permitted and installed by Continuum, a separate company.<br>
+    <span class="foot__links"><a class="foot__link" href="index.html">Join the team</a><a class="foot__link" href="homeowners.html">For homeowners</a><a class="foot__link" href="privacy.html">Privacy</a></span><br>
+    <span class="foot__copy">&copy; <span id="year">2026</span> Switch. All rights reserved.</span></p>
   </div>
 </footer>
 

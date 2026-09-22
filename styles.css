@@ -1,3 +1,14 @@
+/* Figtree, self-hosted. Open Font Licence. One variable file covers every
+   weight used here. Self-hosted rather than loaded from Google so that no
+   visitor request ever reaches a third party. */
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("assets/fonts/figtree-variable.woff2") format("woff2");
+}
+
 /* ============================================================
    Switch Power Co
    Palette and construction come from the wordmark itself:
@@ -399,16 +410,42 @@ a { color: inherit; }
 .foot { padding-block: clamp(3rem, 6vw, 4.5rem); border-top: 1px solid var(--hair-ink); }
 .foot__inner {
   display: grid;
-  gap: 1.75rem;
+  gap: 2rem;
   align-items: end;
 }
+.foot__brand { display: grid; gap: 1.5rem; justify-items: start; }
 .foot__logo { width: clamp(8rem, 20vw, 11rem); }
-.foot__meta { margin: 0; color: var(--grey-ink); font-size: .9375rem; line-height: 1.6; }
+
+/* Continuum's mark sits under ours and is held deliberately smaller than the
+   Switch wordmark in both width and rendered height. Do not enlarge it past
+   the Switch logo, and do not recolour it — see their brand guide. */
+/* Spacing lives on the wrapper so the <img> box measures the artwork itself,
+   which keeps the "never larger than the Switch wordmark" rule verifiable. */
+.foot__partner {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--hair-ink);
+}
+/* The "POWERED BY" inside Continuum's lock-up renders ~3px tall at any size
+   that stays under the Switch wordmark, and the brand guide forbids altering
+   the artwork. So the credit is also set as real text, which is legible,
+   selectable and readable by screen readers. */
+.foot__partner-label {
+  margin: 0 0 .5rem;
+  font-size: .8125rem;
+  font-weight: 800;
+  letter-spacing: .01em;
+  color: var(--volt);
+}
+.foot__partner-logo { width: clamp(6.5rem, 15vw, 8.5rem); }
+
+.foot__meta { margin: 0; color: var(--grey-ink); font-size: .9375rem; line-height: 1.7; }
 .foot__copy { color: #6F6F6F; }
+.foot__links { display: inline-flex; flex-wrap: wrap; gap: 1.25rem; padding-block: .5rem; }
 
 @media (min-width: 52rem) {
   .foot__inner { grid-template-columns: auto 1fr; gap: 3rem; justify-items: start; }
   .foot__meta { text-align: right; justify-self: end; }
+  .foot__links { justify-content: flex-end; }
 }
 
 /* ---------- motion ---------- */
@@ -624,3 +661,24 @@ a { color: inherit; }
 /* prose that follows a split block needs its own top margin, since the
    .lede + .lede adjacency no longer applies across it */
 .compare + .lede { margin-top: clamp(2rem, 4vw, 2.75rem); }
+
+
+.inline-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 2px solid var(--volt-deep);
+  padding-bottom: 1px;
+}
+.inline-link:hover { border-bottom-color: var(--ink); }
+
+
+/* Continuum's mark inside the split block. Same rule as the footer: never
+   larger than the Switch wordmark, never recoloured. */
+.compare__mark {
+  width: clamp(5.5rem, 12vw, 7rem);
+  margin-bottom: 1rem;
+}
+
+/* Switch's own mark in the split block, paired with Continuum's. Sized so the
+   Switch wordmark always reads larger than the Continuum lock-up beside it. */
+.compare__mark--switch { width: clamp(6.5rem, 15vw, 8.5rem); }

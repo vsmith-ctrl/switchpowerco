@@ -1,6 +1,6 @@
 # switchpowerco.com
 
-Marketing site for **Switch Power Co** — a door-to-door solar and storage sales team in
+Marketing site for **Switch** — a door-to-door solar and storage sales team in
 California, and a sales partner of Continuum.
 
 Two audiences, one page each:
@@ -57,6 +57,68 @@ These are the placeholders left in the code. Search for `TODO` to find them all 
       convert better.
 
 ---
+
+## Privacy and compliance
+
+### What the site actually does
+
+Audited, not assumed. This site is static HTML and:
+
+- has **no forms** — no name, email, address, bill upload or quote request field anywhere
+- sets **no cookies** and uses no `localStorage`, `sessionStorage` or `indexedDB`
+- runs **no analytics or tracking** — no Google Analytics, Meta pixel, ad tags or session recording
+- makes **no third-party requests at all**. The typeface is self-hosted (`assets/fonts/`)
+  specifically so that no visitor request reaches Google or anyone else.
+
+The only JavaScript is `main.js`: it toggles the hero switch and writes the current year.
+It touches no storage and sends no network request.
+
+`privacy.html` states all of this publicly, and is linked from every footer.
+
+Two things are honestly disclosed there rather than glossed over: GitHub Pages keeps standard
+server logs (GitHub's data, not ours), and an email someone chooses to send us is personal
+information we then hold in a mailbox.
+
+**If anyone later adds a form, a chat widget, an embedded map or video, a tracking pixel or
+an analytics tag, the privacy page stops being accurate.** Update it in the same change.
+
+### Still needs a lawyer
+
+The website's data handling is clean. These are separate questions about operating a
+door-to-door solar sales business in California, and they are flagged here because the site
+touches them. **This is not legal advice — get it reviewed.**
+
+- [ ] **CSLB licence number in advertising.** California requires contractors to display
+      their licence number in advertising. Switch is the sales partner and Continuum holds
+      the licence, so confirm whether this site needs a licence number shown, and whose.
+- [ ] **Home Improvement Salesperson registration.** California generally requires people
+      selling home improvement contracts door to door to be registered with CSLB. This
+      affects how you recruit and onboard, and what the recruiting page can promise.
+- [ ] **Pay scale in job postings.** California requires employers over a certain headcount
+      to include a pay scale in job postings. The recruiting page deliberately carries no
+      figures and routes people to a call — confirm that is sufficient at your headcount.
+- [ ] **Worker classification.** Whether reps are employees or contractors drives much of the
+      above. Worth settling before scaling the team.
+- [ ] **Solar contract disclosures.** California requires a specific disclosure document for
+      residential solar contracts. That lives in Continuum's paperwork, not on this site, but
+      make sure nothing the site says contradicts it.
+- [ ] **The copyright line** says "Switch". Confirm the registered legal entity name and use
+      that if it differs.
+
+### Continuum brand rules
+
+Continuum's brand guide forbids stretching, recolouring, recreating or otherwise modifying
+their logo. The artwork in `assets/continuum-*.png` is extracted from that guide unaltered.
+
+- `continuum-light.png` — approved Color/Reverse, for dark backgrounds
+- `continuum-dark.png` — for light backgrounds
+
+Their mark is deliberately held **smaller than the Switch wordmark** everywhere it appears
+(footer: 128×23 against Switch at 176×46). Keep it that way.
+
+"Powered by Continuum" appears as real text in every footer. The words are inside Continuum's
+lock-up too, but at any size that stays under the Switch wordmark they render about 3px tall,
+so the text credit is what actually satisfies the requirement. Do not remove it.
 
 ## Local preview
 
