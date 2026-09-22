@@ -58,24 +58,60 @@ Then open <http://localhost:4321>.
 
 ## Deploying
 
-The repo is set up for GitHub Pages serving from the root of `main`:
+**Live on GitHub Pages.** Repo is public, Pages serves from the root of `main`, and every
+push to `main` redeploys automatically within about a minute.
 
-- `CNAME` points at `switchpowerco.com`
+- Build status: <https://github.com/vsmith-ctrl/switchpowerco/deployments>
+- `CNAME` sets the custom domain to `switchpowerco.com`
 - `.nojekyll` stops Pages running the files through Jekyll
 
-**Note:** GitHub Pages on a *private* repo requires a paid GitHub plan. On the free plan you
-must either make the repo public or host elsewhere — Cloudflare Pages and Netlify both serve
-a static repo like this one for free and keep it private.
+### Remaining step: point the GoDaddy domain at GitHub
 
-DNS for `switchpowerco.com`, once Pages is enabled:
+`switchpowerco.com` is registered at GoDaddy and still on GoDaddy nameservers
+(`ns45/ns46.domaincontrol.com`), so DNS is edited in the GoDaddy DNS panel — nameservers do
+not need to change.
 
-| Type | Name | Value |
-| --- | --- | --- |
-| A | `@` | `185.199.108.153` |
-| A | `@` | `185.199.109.153` |
-| A | `@` | `185.199.110.153` |
-| A | `@` | `185.199.111.153` |
-| CNAME | `www` | `vsmith-ctrl.github.io` |
+Go to **GoDaddy → My Products → switchpowerco.com → DNS → Manage Zones**, then:
+
+1. **Delete the existing parking records.** There are currently two `A` records on `@`
+   pointing at `76.223.105.230` and `13.248.243.5` (GoDaddy parking), and a `CNAME` on `www`.
+   Remove all three. If the domain has Domain Forwarding turned on, turn that off too —
+   it silently re-creates the parking records.
+
+2. **Add four A records** on `@`, all with TTL 600:
+
+   | Type | Name | Value |
+   | --- | --- | --- |
+   | A | `@` | `185.199.108.153` |
+   | A | `@` | `185.199.109.153` |
+   | A | `@` | `185.199.110.153` |
+   | A | `@` | `185.199.111.153` |
+
+3. **Add one CNAME** so `www` works:
+
+   | Type | Name | Value |
+   | --- | --- | --- |
+   | CNAME | `www` | `vsmith-ctrl.github.io` |
+
+   GoDaddy may require a trailing dot: `vsmith-ctrl.github.io.`
+
+4. **Wait for propagation** (usually 10–60 minutes, up to a few hours), then check:
+
+   ```bash
+   dig +short switchpowerco.com A
+   ```
+
+   Once that returns the four `185.199.x.x` addresses, go to
+   **GitHub → repo → Settings → Pages** and tick **Enforce HTTPS**. The certificate is issued
+   automatically and can take a few minutes to appear; the tickbox stays greyed out until
+   it is ready.
+
+### Email
+
+`careers@` and `info@switchpowerco.com` are mailboxes, not DNS records GitHub touches. They
+need `MX` records, which are separate from everything above — adding the `A` records does not
+affect mail. If email is already working on this domain, leave the existing `MX` and `TXT`
+records alone.
 
 ## Structure
 
