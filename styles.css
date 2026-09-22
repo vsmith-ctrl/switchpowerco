@@ -604,3 +604,23 @@ a { color: inherit; }
 }
 
 .nav__link, .btn { white-space: nowrap; }
+
+/* split block on a white slab */
+
+.compare--paper {
+  border-top-color: var(--hair);
+  border-bottom-color: var(--hair);
+}
+.compare--paper .compare__col + .compare__col { border-top-color: var(--hair); }
+.compare--paper .compare__h { color: var(--grey); }
+.compare--paper .compare__col--now .compare__h { color: var(--volt-deep); }
+.compare--paper .compare__col p { color: var(--grey); }
+.compare--paper .compare__col--now p { color: var(--ink); }
+
+@media (min-width: 52rem) {
+  .compare--paper .compare__col--now { border-left-color: var(--hair); }
+}
+
+/* prose that follows a split block needs its own top margin, since the
+   .lede + .lede adjacency no longer applies across it */
+.compare + .lede { margin-top: clamp(2rem, 4vw, 2.75rem); }

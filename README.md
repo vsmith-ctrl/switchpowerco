@@ -36,8 +36,16 @@ These are the placeholders left in the code. Search for `TODO` to find them all 
 
 ### Should fix — makes it yours rather than generic
 
-- [ ] **Who Continuum is.** Two or three sentences, used in two places: the partner section on
-      `index.html` and the "Who Switch Power Co is" section on `homeowners.html`.
+- [x] **Who Continuum is.** Written into both pages, each with a side-by-side block making the
+      two-company split explicit: Switch sells, Continuum engineers, permits, installs and
+      services. Continuum is described as a California-based solar and storage EPC with more
+      than twenty years of code-compliant work.
+
+      Continuum's own brand palette (from their brand guide) is PMS 381c `#CCFF00`,
+      PMS 301c `#1C4E7B`, PMS 403c `#787F84` and PMS Black `#231F20`, set in Circular.
+      Their positioning line is "Take Back Your Power." None of it is used on this site —
+      Switch keeps its own identity — but it is recorded here in case co-branded material
+      is ever needed.
 - [ ] **Your weekly ritual** in the "What a week looks like" section on `index.html` — team
       dinner, competition, awards night, whatever you actually do.
 - [ ] **Comp structure and promotion criteria.** The site deliberately points reps to a
