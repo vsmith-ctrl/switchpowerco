@@ -21,8 +21,9 @@ These are the placeholders left in the code. Search for `TODO` to find them all 
 ### Must fix — the site is wrong without these
 
 - [ ] **Phone number.** `tel:+15550123456` is a dummy number and appears on both pages.
-- [ ] **Email addresses.** `careers@switchpowerco.com` (index) and `hello@switchpowerco.com`
-      (homeowners) need to exist and be monitored, or be swapped for real ones.
+- [x] **Email addresses.** `careers@switchpowerco.com` for people who want to sell for us
+      (recruiting page), `info@switchpowerco.com` for everything else (homeowners page).
+      Both mailboxes need to exist at the domain and be monitored.
 - [ ] **Federal and state incentives paragraph** in `homeowners.html` (financing section).
       Incentive rules changed at the end of 2025 and continue to move. Have someone at
       Continuum confirm the current position for both homeowner-owned and third-party-owned
