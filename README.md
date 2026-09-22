@@ -20,7 +20,9 @@ These are the placeholders left in the code. Search for `TODO` to find them all 
 
 ### Must fix — the site is wrong without these
 
-- [ ] **Phone number.** `tel:+15550123456` is a dummy number and appears on both pages.
+- [ ] **Phone number.** There is no number yet, so the "Text us" / "Call or text" buttons
+      have been removed rather than left as dead links. A commented-out button sits in the
+      call-to-action block on each page — uncomment and fill in the number when there is one.
 - [x] **Email addresses.** `careers@switchpowerco.com` for people who want to sell for us
       (recruiting page), `info@switchpowerco.com` for everything else (homeowners page).
       Both mailboxes need to exist at the domain and be monitored.
