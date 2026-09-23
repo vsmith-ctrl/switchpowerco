@@ -1098,3 +1098,115 @@ a { color: inherit; }
 .key__sw--charge { background: var(--s-battery); opacity: .34; }
 /* the usage line is solid white in the chart, so its swatch must be too */
 .key__sw--line { height: 0; border-top: 2px solid var(--paper); border-radius: 0; }
+
+/* ============================================================
+   POWER FLOW — app-style screen inset in the light section.
+   Dark-surface palette, validated all-pairs on black:
+   solar #7E9C18 · battery #3987e5 · grid #d55181.
+   ============================================================ */
+
+.tenet--wide { grid-template-columns: 1fr; }
+.tenet--wide .tenet__h { margin-bottom: .5rem; }
+.tenet--wide > p { margin-bottom: 1.25rem; }
+
+.viz--screen {
+  --s-solar:   #7E9C18;
+  --s-battery: #3987e5;
+  --s-grid:    #d55181;
+  --s-home:    #E9EDF0;
+  background: #000;
+  color: var(--paper);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 22px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  box-shadow: 0 30px 80px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.03);
+}
+.viz--screen .viz__note { color: var(--grey-ink); border-left-color: var(--s-solar); }
+.viz--screen .viz__note strong { color: var(--paper); }
+
+.flow__controls {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 1rem 2rem; margin-bottom: .5rem;
+}
+
+.seg { display: inline-flex; border: 1.5px solid rgba(255,255,255,.22); border-radius: 999px; padding: 3px; gap: 3px; }
+.seg__btn {
+  appearance: none; border: 0; background: none; cursor: pointer;
+  font: inherit; font-weight: 800; font-size: .9375rem;
+  padding: .5rem 1rem; border-radius: 999px; color: var(--grey-ink);
+  transition: background-color .15s ease, color .15s ease;
+}
+.seg__btn.is-on { background: var(--paper); color: var(--ink); }
+.seg__btn:hover:not(.is-on) { color: var(--paper); }
+
+.gsw { display: inline-flex; align-items: center; gap: .75rem; }
+.gsw__lab { font-weight: 800; font-size: .9375rem; color: var(--paper); }
+.gsw__state { font-weight: 800; font-size: .9375rem; color: var(--grey-ink); min-width: 6ch; transition: color .2s ease; }
+.gsw.is-on .gsw__state { color: var(--volt); }
+.switch--sm .switch__track { --track-w: 4.25rem; --track-h: 2.25rem; --track-pad: .3125rem; }
+.gsw.is-on .switch__track { background: rgba(213,253,82,.16); border-color: var(--volt);
+  box-shadow: 0 0 0 1px rgba(213,253,82,.5), 0 0 24px rgba(213,253,82,.38); }
+.gsw.is-on .switch__knob { background: var(--volt); box-shadow: 0 0 16px rgba(213,253,82,.75);
+  transform: translateX(calc(var(--track-w) - var(--track-h))); }
+
+/* svg */
+.flow__svg { width: 100%; height: auto; display: block; overflow: visible; margin: .25rem 0 0; }
+
+.bus__line { fill: none; stroke: rgba(255,255,255,.14); stroke-width: 2; stroke-linecap: round; transition: stroke .3s ease; }
+.bus__line.is-cut { stroke-dasharray: 5 9; stroke: rgba(255,255,255,.1); }
+
+/* dots travelling along a path: a zero-length dash with round caps */
+.flow {
+  fill: none;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 0.01 22;
+  opacity: 0;
+  transition: opacity .35s ease;
+  filter: drop-shadow(0 0 4px currentColor);
+}
+.flow[data-series="solar"]   { stroke: var(--s-solar);   color: var(--s-solar); }
+.flow[data-series="battery"] { stroke: var(--s-battery); color: var(--s-battery); }
+.flow[data-series="grid"]    { stroke: var(--s-grid);    color: var(--s-grid); }
+.flow.is-on { opacity: 1; animation: flow 1.6s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -22.01; } }
+
+.cut { transition: opacity .3s ease; }
+.cut__x { stroke: var(--paper); stroke-width: 3.5; stroke-linecap: round; }
+
+/* nodes */
+.node__halo { fill: none; opacity: 0; transition: opacity .4s ease; }
+.node__ring { fill: #000; stroke-width: 2.5; transition: stroke .3s ease, filter .3s ease; }
+.node[data-series="solar"]   .node__ring, .node[data-series="solar"]   .ic { stroke: var(--s-solar); }
+.node[data-series="battery"] .node__ring, .node[data-series="battery"] .ic { stroke: var(--s-battery); }
+.node[data-series="grid"]    .node__ring, .node[data-series="grid"]    .ic { stroke: var(--s-grid); }
+.node[data-series="home"]    .node__ring, .node[data-series="home"]    .ic { stroke: var(--s-home); }
+.ic { fill: none; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+.ic--win { fill: var(--volt); stroke: none !important; }
+.ic--cap { fill: var(--s-battery); }
+.ic--fill { fill: var(--s-battery); transition: height .5s ease, y .5s ease; }
+
+.node__val { font-size: 16px; font-weight: 800; font-family: inherit; fill: var(--paper); font-variant-numeric: tabular-nums; }
+.node__lab { font-size: 14px; font-weight: 500; font-family: inherit; fill: var(--grey-ink); }
+
+.node.is-lit .node__ring { stroke: var(--volt); filter: drop-shadow(0 0 12px rgba(213,253,82,.7)); }
+.node.is-lit .node__halo { fill: rgba(213,253,82,.08); opacity: 1; }
+.node.is-out .node__ring { stroke: rgba(255,255,255,.22); stroke-dasharray: 5 5; }
+.node.is-out .ic { stroke: rgba(255,255,255,.28); }
+.node.is-out .node__val, .node.is-out .node__lab { fill: var(--grey-ink); }
+.node.is-idle .node__ring, .node.is-idle .ic { stroke: rgba(255,255,255,.22); }
+.node.is-idle .node__val { fill: var(--grey-ink); }
+
+.flow__status {
+  margin: 1.25rem 0 0; font-weight: 500; font-size: 1.0625rem; line-height: 1.5;
+  color: var(--paper); max-width: 60ch; min-height: 3.2em;
+}
+
+@media (max-width: 40rem) {
+  .node__val { font-size: 26px; }
+  .node__lab { font-size: 22px; }
+  .flow__controls { gap: .875rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow.is-on { animation: none; stroke-dasharray: 0.01 12; }
+}

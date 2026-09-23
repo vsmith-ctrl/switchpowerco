@@ -160,6 +160,7 @@
 
         <details class="viz__data">
           <summary>See these figures as a table</summary>
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Rate comparison as a table">
           <table class="table table--ink">
             <thead><tr><th scope="col">Rate</th><th scope="col">Cents per kWh</th><th scope="col">Where it comes from</th></tr></thead>
             <tbody>
@@ -170,6 +171,7 @@
               <tr><th scope="row">Solar + battery, blended</th><td>about 28</td><td>varies by scope of work and sun exposure</td></tr>
             </tbody>
           </table>
+          </div>
         </details>
 
         <p class="viz__note">The blended solar and battery figure is around 28&cent; per kWh. <strong>Your actual rate varies with the scope of work and how much sun your roof gets</strong> — shading, orientation, roof condition and the size of system your usage calls for all move it. We quote the real number for your address, not this one.</p>
@@ -272,6 +274,33 @@
           <p>This surprises people: solar panels on their own shut off during an outage. They have to, so they do not electrify lines that somebody is working on. Without a battery, a blackout leaves you as dark as the neighbour with no solar at all.</p>
           <p>With a battery, your essential circuits keep running — the fridge, the internet, lights, medical equipment, a well pump. Through a storm, a planned public safety power shutoff, or a grid failure in a heatwave.</p>
           <p>What gets backed up is a decision made at design time, not an afterthought. Tell us what has to stay on and we will build the system around that.</p>
+        </li>
+        <li class="tenet tenet--wide">
+          <h3 class="tenet__h">See where the power goes</h3>
+          <p>This is the screen a homeowner with solar and storage looks at. Pick a time of day, then switch the grid off. That is an outage with a battery: the panels keep working, the battery keeps the house running, and the only thing that stops is the grid.</p>
+
+          <figure class="viz viz--screen" id="flow">
+            <div class="flow__controls">
+              <div class="seg" role="group" aria-label="Time of day">
+                <button type="button" class="seg__btn is-on" data-time="day" aria-pressed="true">Midday</button>
+                <button type="button" class="seg__btn" data-time="evening" aria-pressed="false">Evening peak</button>
+              </div>
+              <div class="gsw is-on" id="grid-ctl">
+                <span class="gsw__lab">Grid</span>
+                <button type="button" class="switch switch--sm" id="grid-switch" role="switch" aria-checked="true" aria-label="Grid connection: switch the grid on or off">
+                  <span class="switch__track"><span class="switch__knob"></span></span>
+                </button>
+                <span class="gsw__state" id="grid-state">Connected</span>
+              </div>
+            </div>
+
+            <svg class="flow__svg" id="flow-svg" viewBox="0 0 720 600" preserveAspectRatio="xMidYMid meet" role="img"
+                 aria-labelledby="flow-status"></svg>
+
+            <p class="flow__status" id="flow-status" aria-live="polite"></p>
+
+            <p class="viz__note">Flows are illustrative and rounded, drawn from the same modelled day as the chart further down. <strong>Your system’s numbers depend on the scope of work and your sun exposure.</strong> One thing is not illustrative: a solar system without a battery shuts off when the grid does. The battery is what keeps the lights on.</p>
+          </figure>
         </li>
         <li class="tenet">
           <h3 class="tenet__h">Sizing matters more than brand</h3>
@@ -498,5 +527,6 @@
 
 <script src="main.js"></script>
 <script src="charts.js"></script>
+<script src="flow.js"></script>
 </body>
 </html>
