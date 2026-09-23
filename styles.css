@@ -575,7 +575,7 @@ a { color: inherit; }
 .table tbody th {
   font-weight: 800;
   color: var(--ink);
-  width: 26%;
+  width: 22%;
   padding: 1.125rem 1.25rem 1.125rem 0;
   vertical-align: top;
   border-bottom: 1px solid var(--hair);
@@ -585,7 +585,6 @@ a { color: inherit; }
   padding: 1.125rem 1.25rem 1.125rem 0;
   vertical-align: top;
   border-bottom: 1px solid var(--hair);
-  width: 24.66%;
 }
 .table tbody tr:last-child th,
 .table tbody tr:last-child td { border-bottom: 0; }
@@ -682,3 +681,39 @@ a { color: inherit; }
 /* Switch's own mark in the split block, paired with Continuum's. Sized so the
    Switch wordmark always reads larger than the Continuum lock-up beside it. */
 .compare__mark--switch { width: clamp(6.5rem, 15vw, 8.5rem); }
+
+/* table on a dark slab */
+
+.table--ink thead th { border-bottom-color: var(--paper); color: var(--paper); }
+.table--ink tbody th { color: var(--paper); border-bottom-color: var(--hair-ink); }
+.table--ink tbody td { color: var(--grey-ink); border-bottom-color: var(--hair-ink); }
+.table--ink .table__caption { color: var(--grey-ink); }
+
+.inline-link--ink { border-bottom-color: var(--volt); }
+.inline-link--ink:hover { border-bottom-color: var(--paper); }
+
+/* four options rather than three, so give the columns room to breathe */
+.table { min-width: 40rem; }
+.table--wide { min-width: 52rem; }
+
+/* Callout for a fact that changes the decision, not just informs it. */
+
+.callout {
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  border: 2px solid var(--ink);
+  border-left-width: 10px;
+  border-left-color: var(--volt-deep);
+}
+.callout__h {
+  font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  line-height: 1.15;
+  margin: 0 0 1rem;
+  max-width: 28ch;
+}
+.callout p { margin: 0 0 1rem; max-width: var(--measure); color: var(--grey); }
+.callout p:last-child { margin-bottom: 0; }
+.callout strong { color: var(--ink); font-weight: 800; }
+.callout__note { font-size: .9375rem; }

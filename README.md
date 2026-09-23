@@ -26,11 +26,11 @@ These are the placeholders left in the code. Search for `TODO` to find them all 
 - [x] **Email addresses.** `careers@switchpowerco.com` for people who want to sell for us
       (recruiting page), `info@switchpowerco.com` for everything else (homeowners page).
       Both mailboxes need to exist at the domain and be monitored.
-- [ ] **Federal and state incentives paragraph** in `homeowners.html` (financing section).
-      Incentive rules changed at the end of 2025 and continue to move. Have someone at
-      Continuum confirm the current position for both homeowner-owned and third-party-owned
-      systems, then rewrite that paragraph with specifics and a date. Do not publish a number
-      you cannot substantiate.
+- [x] **Federal incentives.** Written and dated. Section 25D (the 30% homeowner credit) ended
+      for systems placed in service after 31 Dec 2025, so cash and loan purchases get **no**
+      federal credit. Section 48E still applies to third-party-owned systems (lease, PPA,
+      prepaid lease) through end of 2027. This is stated in the financing table and in a
+      callout on `homeowners.html`. **Have Continuum confirm before you lean on it commercially.**
 - [ ] **Contractor licence line**, if your role requires one to be displayed. Placeholder is in
       the homeowners page footer block.
 
@@ -119,6 +119,27 @@ Their mark is deliberately held **smaller than the Switch wordmark** everywhere 
 "Powered by Continuum" appears as real text in every footer. The words are inside Continuum's
 lock-up too, but at any size that stays under the Switch wordmark they render about 3px tall,
 so the text credit is what actually satisfies the requirement. Do not remove it.
+
+## Rate and incentive data on the homeowner page
+
+The homeowner page quotes figures that go stale. Each is dated on the page. When you refresh
+them, update the "as of" line in the same edit — a dated wrong number is worse than no number.
+
+| What | Value on the page | Source | Review |
+| --- | --- | --- | --- |
+| PG&E residential split | ~12¢ generation, ~30¢ delivery, ~41¢ total (E-TOU-C, Mar 2026) | PG&E tariff sheets | Each PG&E rate change |
+| PG&E summer peak | ~45–50¢/kWh, 4–9pm Jun–Sep | PG&E tariff sheets | Each PG&E rate change |
+| SMUD export compensation | 9.6¢/kWh from 1 Jun 2026 (was 7.4¢) | SMUD Solar and Storage Rate | SMUD reviews every 4 years, capped ±30% |
+| SMUD battery incentive | $300/kWh, up to $6,000, from 23 Sep 2026 | SMUD My Energy Optimizer Partner+ | **Steps down periodically — check often** |
+| Federal tax credit | 25D ended 31 Dec 2025; 48E runs to end of 2027 | Public law, July 2025 | Any tax legislation |
+
+The SMUD battery incentive dropped from $500/kWh (up to $10,000) to $300/kWh (up to $6,000)
+on 23 September 2026. It has stepped down before and will again. Treat that row as the one
+most likely to be wrong.
+
+Deliberately **not** on the page: any projected savings figure, payback period, or income
+claim. Those are the numbers that create liability, and they belong in a proposal built from
+a specific customer's bill, not on a public page.
 
 ## Local preview
 
