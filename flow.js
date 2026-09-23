@@ -72,7 +72,7 @@
       : { W: 720, H: 600, R: 46, N: { solar: [360, 96], grid: [118, 300], home: [602, 300], battery: [360, 504] } };
   }
 
-  var G, N, R, J, flows = {}, flowLabs = {}, cut, gridBus, nodes = {}, battFill;
+  var G, N, R, J, flows = {}, cut, gridBus, nodes = {}, battFill;
 
   function build() {
     G = layout(); N = G.N; R = G.R; J = [N.solar[0], N.grid[1]];
@@ -92,10 +92,10 @@
     // offset by a few units so two streams sit side by side instead of on
     // top of each other.
     var P = {
-      s2h: "M" + (sx + 3) + " " + top + " V" + (gy - 3) + " H" + right,
-      s2b: "M" + (sx - 3) + " " + top + " V" + bot,
-      s2g: "M" + (sx + 3) + " " + top + " V" + (gy + 3) + " H" + left,
-      b2h: "M" + (sx + 3) + " " + bot + " V" + (gy + 3) + " H" + right,
+      s2h: "M" + sx + " " + top + " V" + gy + " H" + right,
+      s2b: "M" + sx + " " + top + " V" + bot,
+      s2g: "M" + sx + " " + top + " V" + gy + " H" + left,
+      b2h: "M" + sx + " " + bot + " V" + gy + " H" + right,
       g2h: "M" + left + " " + gy + " H" + right
     };
     var SERIES = { s2h: "solar", s2b: "solar", s2g: "solar", b2h: "battery", g2h: "grid" };
@@ -105,20 +105,7 @@
                               style: "animation-delay:" + (-i * 0.35) + "s" }, gF);
     });
 
-    // one kW label per stream, on the segment that belongs to it alone
-    var midX = (J[0] + right) / 2, midL = (left + J[0]) / 2, midY = (J[1] + bot) / 2, topY = (top + J[1]) / 2;
-    var LAB = {
-      s2h: [midX, gy - 14, "middle"],            // junction -> home (horizontal, above)
-      b2h: [midX, gy - 14, "middle"],            // same segment, never active at the same time
-      s2b: [sx + 16, midY, "start"],             // junction -> battery (vertical, right side)
-      s2g: [midL, gy - 14, "middle"],            // junction -> grid (horizontal, above)
-      g2h: [midL, gy - 14, "middle"]
-    };
-    flowLabs = {};
-    Object.keys(LAB).forEach(function (k) {
-      flowLabs[k] = text("", { x: LAB[k][0], y: LAB[k][1], class: "flow-kw", "text-anchor": LAB[k][2] }, gF);
-    });
-    void topY;
+
 
     // severed mark, midway between the grid node and the junction
     var cx = (left + J[0]) / 2;
@@ -174,9 +161,7 @@
     var hour = HOURS[timeKey], s = scenario(hour, gridOn);
 
     Object.keys(flows).forEach(function (k) {
-      var on = s[k] > 0.05;
-      flows[k].classList.toggle("is-on", on);
-      flowLabs[k].textContent = on ? kw(s[k]) : "";
+      flows[k].classList.toggle("is-on", s[k] > 0.05);
     });
 
     nodes.solar.val.textContent = kw(s.solar);

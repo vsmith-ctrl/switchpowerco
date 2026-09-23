@@ -170,13 +170,13 @@ a midday / evening-peak control, and the brand's switch component to turn the gr
 There are no typed-in numbers. `model.js` simulates the day once and both `charts.js` and
 `flow.js` read from it, so the chart, its table and the panel cannot disagree. The panel uses
 the **11am** hour (battery charging hardest, a sliver exported) and the **7pm** hour (the
-priciest, battery carrying the house), set as `HOURS` at the top of `flow.js`. Each stream is
-labelled with its own kW, and the status line is assembled from the same values, so the
-arithmetic on screen adds up by construction. State of charge is shown at the start of the
+priciest, battery carrying the house), set as `HOURS` at the top of `flow.js`. The status line is
+assembled from the same values, so what it says always matches the nodes. State of charge is shown at the start of the
 hour. To change the household, the system or the battery, edit `model.js` only.
 
-The streams are the brand lime, pulsing — power on the move is what the panel is about. The
-source is still unambiguous: the ring colour on the node a stream leaves, plus its kW label.
+Active streams are solid lines that pulse, in the colour of the node they leave: solar in the
+brand lime, battery blue, grid magenta. There are no labels on the lines; the kW lives in
+the nodes.
 
 Switching the grid off is the point of the panel: the grid node dims, the line is severed,
 export stops, and nothing else changes. Keep it that way — the message is that a battery keeps
