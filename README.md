@@ -158,6 +158,26 @@ Deliberately **not** on the page: any projected savings figure, payback period, 
 claim. Those are the numbers that create liability, and they belong in a proposal built from
 a specific customer's bill, not on a public page.
 
+## The power flow panel
+
+`flow.js` draws the app-style power flow in the battery section of `homeowners.html`: four
+nodes (solar, grid, home, battery) with each node's kW inside it, dots streaming along a bus,
+a midday / evening-peak control, and the brand's switch component to turn the grid off.
+
+The values are the **1pm and 7pm hours of the same modelled day as the chart** in `charts.js`,
+so the two visuals cannot disagree. If the day model changes, update the four scenarios at the
+top of `flow.js` to match.
+
+Switching the grid off is the point of the panel: the grid node dims, the line is severed,
+export stops, and nothing else changes. Keep it that way — the message is that a battery keeps
+the house running, and the one non-illustrative claim in its caption (panels alone shut off in
+an outage) is true.
+
+Two layouts: a 720×600 cross on desktop and a 440×620 portrait on phones, rebuilt on a
+breakpoint change. Palette is the validated dark-surface trio. The `<figure>` must not carry
+the class `flow` — that class belongs to the animated particle paths, whose rule hides them
+until active, and it will hide the whole panel.
+
 ## Local preview
 
 ```bash
