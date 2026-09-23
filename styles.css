@@ -717,3 +717,204 @@ a { color: inherit; }
 .callout p:last-child { margin-bottom: 0; }
 .callout strong { color: var(--ink); font-weight: 800; }
 .callout__note { font-size: .9375rem; }
+
+/* ============================================================
+   MOTION LAYER
+   Hand-built, no libraries, nothing loaded from a third party.
+   Everything here is suppressed under prefers-reduced-motion,
+   and every animated element is fully legible in its rest state.
+   ============================================================ */
+
+/* ---------- hero ambience ---------- */
+
+.slab.hero { position: relative; overflow: hidden; isolation: isolate; }
+.hero__content { position: relative; z-index: 2; }
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* faint engineering grid, brightens when the switch is on */
+.hero__grid {
+  position: absolute;
+  inset: -2px;
+  background-image:
+    linear-gradient(to right, rgba(213,253,82,.22) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(213,253,82,.22) 1px, transparent 1px);
+  background-size: 68px 68px;
+  opacity: .16;
+  transition: opacity .9s ease;
+  /* fades out toward the edges so it reads as depth, not wallpaper */
+  -webkit-mask-image: radial-gradient(ellipse 85% 70% at 30% 35%, #000 20%, transparent 78%);
+          mask-image: radial-gradient(ellipse 85% 70% at 30% 35%, #000 20%, transparent 78%);
+}
+
+/* slow-drifting light. This is the "power" in the page. */
+.hero__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: .30;
+  transition: opacity 1.1s ease, filter 1.1s ease;
+  will-change: transform;
+}
+.hero__glow--a {
+  width: 46vw; height: 46vw;
+  min-width: 320px; min-height: 320px;
+  left: -10vw; top: -14vw;
+  background: radial-gradient(circle, rgba(213,253,82,.55), transparent 68%);
+  animation: drift-a 22s ease-in-out infinite alternate;
+}
+.hero__glow--b {
+  width: 38vw; height: 38vw;
+  min-width: 260px; min-height: 260px;
+  right: -8vw; bottom: -16vw;
+  background: radial-gradient(circle, rgba(120,200,255,.30), transparent 70%);
+  animation: drift-b 27s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a {
+  from { transform: translate3d(0,0,0)      scale(1);   }
+  to   { transform: translate3d(7vw,5vh,0)  scale(1.16); }
+}
+@keyframes drift-b {
+  from { transform: translate3d(0,0,0)       scale(1.1); }
+  to   { transform: translate3d(-6vw,-4vh,0) scale(.92); }
+}
+
+/* a single sweep of light, fired when the switch is thrown */
+.hero__surge {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(105deg,
+    transparent 38%,
+    rgba(213,253,82,.20) 48%,
+    rgba(255,255,255,.30) 51%,
+    rgba(213,253,82,.20) 54%,
+    transparent 64%);
+  transform: translateX(-100%);
+}
+.hero.is-live .hero__surge { animation: surge 1.05s cubic-bezier(.3,.7,.3,1) 1; }
+@keyframes surge {
+  0%   { opacity: 0;  transform: translateX(-100%); }
+  12%  { opacity: 1; }
+  100% { opacity: 0;  transform: translateX(100%); }
+}
+
+/* horizon line that only exists once the page is powered */
+.hero__scan {
+  position: absolute;
+  left: 0; right: 0; bottom: 18%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(213,253,82,.55), transparent);
+  opacity: 0;
+  transform: scaleX(.3);
+  transition: opacity .8s ease .15s, transform 1.2s cubic-bezier(.2,.8,.2,1) .15s;
+}
+
+/* powered-on state, driven by the switch */
+.hero.is-live .hero__grid { opacity: .42; }
+.hero.is-live .hero__glow--a { opacity: .62; filter: blur(74px); }
+.hero.is-live .hero__glow--b { opacity: .46; }
+.hero.is-live .hero__scan { opacity: 1; transform: scaleX(1); }
+
+/* the switch itself gains a halo once it is on */
+.flip.is-on .switch__track {
+  box-shadow: 0 0 0 1px rgba(213,253,82,.5), 0 0 34px rgba(213,253,82,.38);
+}
+.flip.is-on .switch__knob { box-shadow: 0 0 22px rgba(213,253,82,.75); }
+.switch__track, .switch__knob { will-change: transform, box-shadow; }
+
+/* ---------- scroll reveals ---------- */
+/* Default is visible. The .js class is set by an inline script in <head>,
+   so content is never hidden when JavaScript is unavailable. */
+
+.js .reveal {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0) scale(.985);
+  transition:
+    opacity .72s cubic-bezier(.2,.7,.2,1),
+    transform .72s cubic-bezier(.2,.7,.2,1);
+  transition-delay: calc(var(--reveal-delay, 0) * 85ms);
+  will-change: opacity, transform;
+}
+.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- interactive polish ---------- */
+
+.btn--volt {
+  box-shadow: 0 0 0 rgba(213,253,82,0);
+  transition: background-color .15s ease, color .15s ease,
+              box-shadow .28s ease, transform .18s cubic-bezier(.2,.8,.2,1);
+}
+.btn--volt:hover {
+  box-shadow: 0 0 34px rgba(213,253,82,.45);
+  transform: translateY(-2px);
+}
+.btn--ghost, .btn--ink, .btn--outline-ink {
+  transition: background-color .15s ease, color .15s ease,
+              border-color .15s ease, transform .18s cubic-bezier(.2,.8,.2,1);
+}
+.btn--ghost:hover, .btn--ink:hover, .btn--outline-ink:hover { transform: translateY(-2px); }
+
+/* rows lift very slightly toward the reader on hover */
+.tenet, .rhythm__row, .step {
+  transition: background-color .3s ease, box-shadow .3s ease;
+}
+.slab--ink .tenet:hover,
+.slab--ink .rhythm__row:hover,
+.slab--ink .step:hover { box-shadow: inset 0 0 60px rgba(213,253,82,.05); }
+.slab--paper .tenet:hover,
+.slab--paper .rhythm__row:hover { box-shadow: inset 0 0 60px rgba(0,0,0,.03); }
+
+/* the numerals in the join sequence glow faintly */
+.step:hover .step__n { text-shadow: 0 0 22px rgba(213,253,82,.55); }
+.step__n { transition: text-shadow .3s ease; }
+
+/* ---------- animated figures ---------- */
+
+.count { font-variant-numeric: tabular-nums; }
+
+/* ---------- motion off ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__glow--a, .hero__glow--b { animation: none; }
+  .hero.is-live .hero__surge { animation: none; }
+  .hero__scan { transition: none; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .btn--volt:hover, .btn--ghost:hover, .btn--ink:hover, .btn--outline-ink:hover { transform: none; }
+}
+
+/* ---------- motion, tuned for phones ---------- */
+/* Large blur radii are expensive to composite on mobile GPUs, and a drifting
+   glow is not worth anyone's battery on a phone. Keep the look, drop the cost. */
+
+@media (max-width: 48rem) {
+  .hero__glow { filter: blur(56px); animation: none; }
+  .hero__glow--a { width: 78vw; height: 78vw; }
+  .hero__glow--b { width: 62vw; height: 62vw; }
+  .hero__grid { background-size: 44px 44px; }
+  .js .reveal { transition-duration: .55s; }
+  .js .reveal { transition-delay: calc(var(--reveal-delay, 0) * 55ms); }
+}
+
+/* Hover lifts are meaningless on touch and can stick after a tap. */
+@media (hover: none) {
+  .btn--volt:hover, .btn--ghost:hover, .btn--ink:hover, .btn--outline-ink:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .slab--ink .tenet:hover,
+  .slab--ink .rhythm__row:hover,
+  .slab--ink .step:hover,
+  .slab--paper .tenet:hover,
+  .slab--paper .rhythm__row:hover { box-shadow: none; }
+  .step:hover .step__n { text-shadow: none; }
+}

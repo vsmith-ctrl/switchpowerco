@@ -15,6 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/figtree-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -34,11 +35,19 @@
 <main id="main">
 
   <!-- ============ HERO ============ -->
-  <section class="slab slab--ink hero">
-    <div class="wrap">
-      <h1 class="display">Two teams.<br>One switch<span class="dot">.</span></h1>
+  <section class="slab slab--ink hero" id="hero">
+    <!-- Ambient layers. Dim until the switch is flipped, then the hero powers on. -->
+    <div class="hero__bg" aria-hidden="true">
+      <div class="hero__grid"></div>
+      <div class="hero__glow hero__glow--a"></div>
+      <div class="hero__glow hero__glow--b"></div>
+      <div class="hero__surge"></div>
+      <div class="hero__scan"></div>
+    </div>
+    <div class="wrap hero__content">
+      <h1 class="display reveal" data-reveal-order="1">Two teams.<br>One switch<span class="dot">.</span></h1>
 
-      <div class="flip">
+      <div class="flip reveal" data-reveal-order="2">
         <div class="flip__control">
           <span class="flip__label" data-side="off">Most teams</span>
           <button class="switch" id="flip-switch" role="switch" aria-checked="false" aria-label="Compare most teams with this team">
@@ -53,9 +62,9 @@
         </div>
       </div>
 
-      <p class="hero__sub">Switch is a sales company. We knock doors across Northern California for solar and storage, and Continuum — the EPC we chose to build behind us — engineers, permits and installs every system we sell. We are hiring setters and closers.</p>
+      <p class="hero__sub reveal" data-reveal-order="3">Switch is a sales company. We knock doors across Northern California for solar and storage, and Continuum — the EPC we chose to build behind us — engineers, permits and installs every system we sell. We are hiring setters and closers.</p>
 
-      <div class="actions">
+      <div class="actions reveal" data-reveal-order="4">
         <a class="btn btn--volt" href="#apply">Apply to join</a>
         <a class="btn btn--ghost" href="#culture">How we run</a>
       </div>
@@ -124,7 +133,7 @@
   <section class="slab slab--paper" id="why">
     <div class="wrap">
       <h2 class="h2">Why sell with Switch</h2>
-      <p class="lede">Every solar company in California will tell you the commission is great and the leads are hot. You have probably already heard it from two of them this month. Here is what is actually different here, in terms you can check.</p>
+      <p class="lede">Every solar company in California will tell you the commission is great and the leads are hot. You have probably already heard it from two of them this month. Here is what is actually different here, in terms you can check before you commit a single Saturday.</p>
 
       <ul class="tenets">
         <li class="tenet">
@@ -144,8 +153,9 @@
           <p>Commission is paid on the Friday following completed installation. Not sixty days later, not in pieces, not when somebody gets around to it. You will always know exactly when money is coming and what triggered it.</p>
         </li>
         <li class="tenet">
-          <h3 class="tenet__h">Real tools, not a notes app</h3>
-          <p>You get proper software to manage your pipeline and track every project through to install. You can see where each deal stands without chasing anybody for an answer, which matters most in the weeks where you have a lot of them moving at once.</p>
+          <h3 class="tenet__h">Every tool you need to do this properly</h3>
+          <p>We provide the software, and we do not cut corners on it. Canvassing tools so you know which doors are worth your afternoon and never work the same street twice. System sizing software so the design you put in front of a homeowner is built from their real usage rather than a guess. And full visibility of every project you have sold, from signature through to install.</p>
+          <p>That last one matters more than it sounds. The reason reps get uncomfortable at a kitchen table is almost never the pitch — it is being asked a question they cannot answer. When you can see exactly where a project stands and exactly what the system will do, you stop bluffing and start talking straight. Homeowners can tell the difference, and so can your close rate.</p>
         </li>
       </ul>
 
