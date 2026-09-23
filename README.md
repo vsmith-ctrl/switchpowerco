@@ -174,9 +174,12 @@ priciest, battery carrying the house), set as `HOURS` at the top of `flow.js`. T
 assembled from the same values, so what it says always matches the nodes. State of charge is shown at the start of the
 hour. To change the household, the system or the battery, edit `model.js` only.
 
-Active streams are solid lines that pulse, in the colour of the node they leave: solar in the
-brand lime, battery blue, grid magenta. There are no labels on the lines; the kW lives in
-the nodes.
+An active stream is a lit wire with energy packets travelling along it from source to
+destination — a bright head and a faint tail, in the colour of the node it leaves (solar in
+the brand lime, battery blue, grid magenta). Packet density and speed are set from the kW in
+`render()`, so a 4.4 kW stream is visibly busier than a 0.6 kW one. Nodes being fed breathe.
+There are no labels on the lines; the kW lives in the nodes. Each path is authored
+source→destination, which is what makes the motion directional — keep it that way.
 
 Switching the grid off is the point of the panel: the grid node dims, the line is severed,
 export stops, and nothing else changes. Keep it that way — the message is that a battery keeps

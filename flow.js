@@ -100,9 +100,15 @@
     };
     var SERIES = { s2h: "solar", s2b: "solar", s2g: "solar", b2h: "battery", g2h: "grid" };
     var gF = el("g", { class: "flows" });
+    // Each path is authored source -> destination, so a dash pattern sliding
+    // along it moves the way the power does. Three layers per stream: the lit
+    // wire, a long faint tail, and a short bright head on top of it.
     Object.keys(P).forEach(function (k, i) {
-      flows[k] = el("path", { d: P[k], class: "flow", "data-series": SERIES[k],
-                              style: "animation-delay:" + (-i * 0.35) + "s" }, gF);
+      var g = el("g", { class: "stream", "data-series": SERIES[k] }, gF);
+      el("path", { d: P[k], class: "wire" }, g);
+      el("path", { d: P[k], class: "pk pk--tail", style: "animation-delay:" + (-i * 0.4) + "s" }, g);
+      el("path", { d: P[k], class: "pk pk--head", style: "animation-delay:" + (-i * 0.4) + "s" }, g);
+      flows[k] = g;
     });
 
 
@@ -161,8 +167,25 @@
     var hour = HOURS[timeKey], s = scenario(hour, gridOn);
 
     Object.keys(flows).forEach(function (k) {
-      flows[k].classList.toggle("is-on", s[k] > 0.05);
+      var v = s[k], on = v > 0.05, g = flows[k];
+      g.classList.toggle("is-on", on);
+      if (!on) return;
+      // Packet length is fixed; the gap closes and the speed rises with kW,
+      // so the eye reads magnitude without a number on the line.
+      var dash = 18;
+      var gap = Math.max(30, Math.round(96 - v * 13));            // 0.6 kW -> 88, 4.4 kW -> 39
+      var speed = Math.min(120, Math.max(46, 44 + v * 18));       // px per second along the path
+      var period = dash + gap;
+      g.style.setProperty("--dash", dash);
+      g.style.setProperty("--gap", gap);
+      g.style.setProperty("--period", period);
+      g.style.setProperty("--dur", (period / speed).toFixed(2) + "s");
     });
+
+    // whoever is being fed breathes as the power arrives
+    nodes.home.g.classList.add("is-receiving");
+    nodes.battery.g.classList.toggle("is-receiving", s.s2b > 0.05);
+    nodes.grid.g.classList.toggle("is-receiving", gridOn && s.s2g > 0.05);
 
     nodes.solar.val.textContent = kw(s.solar);
     nodes.home.val.textContent = kw(s.home);

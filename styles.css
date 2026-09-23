@@ -1155,25 +1155,34 @@ a { color: inherit; }
 .bus__line { fill: none; stroke: rgba(255,255,255,.14); stroke-width: 2; stroke-linecap: round; transition: stroke .3s ease; }
 .bus__line.is-cut { stroke-dasharray: 5 9; stroke: rgba(255,255,255,.1); }
 
-/* a solid line in the source's colour, breathing while power moves */
-.flow {
-  fill: none;
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+/* ---- streams: a lit wire with energy packets travelling along it ----
+   The head is a short bright dash, the tail a longer faint one whose end is
+   pinned to the head's end, so together they read as a comet moving from
+   the source to the destination. Density and speed come from the kW. */
+
+.stream .wire, .stream .pk { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.stream .wire { stroke-width: 3; opacity: 0; transition: opacity .35s ease; }
+.stream.is-on .wire { opacity: .26; }
+
+.stream .pk {
   opacity: 0;
-  transition: opacity .35s ease;
+  stroke-dasharray: calc(var(--dash, 18) * 1px) calc(var(--gap, 60) * 1px);
+  stroke-dashoffset: 0;
 }
-/* Each stream wears its source's colour, matching the ring on the node
-   it leaves: solar in the brand lime, battery blue, grid magenta. */
-.flow[data-series="solar"]   { stroke: var(--volt);      color: var(--volt); }
-.flow[data-series="battery"] { stroke: var(--s-battery); color: var(--s-battery); }
-.flow[data-series="grid"]    { stroke: var(--s-grid);    color: var(--s-grid); }
-.flow.is-on { opacity: 1; animation: pulse 1.5s ease-in-out infinite; }
-@keyframes pulse {
-  0%, 100% { opacity: .45; filter: drop-shadow(0 0 2px currentColor); }
-  50%      { opacity: 1;   filter: drop-shadow(0 0 9px currentColor); }
+.stream .pk--head { stroke-width: 4.5; }
+.stream .pk--tail {
+  stroke-width: 3;
+  stroke-dasharray: calc(var(--dash, 18) * 2.4px) calc((var(--gap, 60) - var(--dash, 18) * 1.4) * 1px);
+  stroke-dashoffset: calc(var(--dash, 18) * 1.4px);   /* pins the tail's end to the head's end */
 }
+.stream.is-on .pk--head { opacity: 1; animation: travel-head var(--dur, 1s) linear infinite; filter: drop-shadow(0 0 6px currentColor) brightness(1.25); }
+.stream.is-on .pk--tail { opacity: .38; animation: travel-tail var(--dur, 1s) linear infinite; }
+@keyframes travel-head { to { stroke-dashoffset: calc(var(--period, 78) * -1px); } }
+@keyframes travel-tail { to { stroke-dashoffset: calc((var(--dash, 18) * 1.4 - var(--period, 78)) * 1px); } }
+
+.stream[data-series="solar"]   .wire, .stream[data-series="solar"]   .pk { stroke: var(--volt);      color: var(--volt); }
+.stream[data-series="battery"] .wire, .stream[data-series="battery"] .pk { stroke: var(--s-battery); color: var(--s-battery); }
+.stream[data-series="grid"]    .wire, .stream[data-series="grid"]    .pk { stroke: var(--s-grid);    color: var(--s-grid); }
 
 .cut { transition: opacity .3s ease; }
 .cut__x { stroke: var(--paper); stroke-width: 3.5; stroke-linecap: round; }
@@ -1195,6 +1204,12 @@ a { color: inherit; }
 
 .node.is-lit .node__ring { stroke: var(--volt); filter: drop-shadow(0 0 12px rgba(213,253,82,.7)); }
 .node.is-lit .node__halo { fill: rgba(213,253,82,.08); opacity: 1; }
+.node.is-receiving .node__halo { opacity: 1; animation: breathe 1.6s ease-in-out infinite; }
+.node[data-series="home"].is-receiving    .node__halo { fill: rgba(213,253,82,.10); }
+.node[data-series="battery"].is-receiving .node__halo { fill: rgba(57,135,229,.16); }
+.node[data-series="grid"].is-receiving    .node__halo { fill: rgba(213,81,129,.14); }
+@keyframes breathe { 0%,100% { transform: scale(.94); opacity: .5; } 50% { transform: scale(1.06); opacity: 1; } }
+.node__halo { transform-origin: center; transform-box: fill-box; }
 .node.is-out .node__ring { stroke: rgba(255,255,255,.22); stroke-dasharray: 5 5; }
 .node.is-out .ic { stroke: rgba(255,255,255,.28); }
 .node.is-out .node__val, .node.is-out .node__lab { fill: var(--grey-ink); }
@@ -1212,5 +1227,7 @@ a { color: inherit; }
   .flow__controls { gap: .875rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .flow.is-on { animation: none; opacity: 1; filter: drop-shadow(0 0 5px currentColor); }
+  .stream.is-on .pk--head, .stream.is-on .pk--tail { animation: none; }
+  .stream.is-on .wire { opacity: .7; }
+  .node.is-receiving .node__halo { animation: none; }
 }
