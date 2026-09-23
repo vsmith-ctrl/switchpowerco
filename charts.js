@@ -56,32 +56,10 @@
   var svg = document.getElementById("day-chart");
   if (!svg) return;
 
-  // Inputs. A household of roughly 26 kWh/day and a system that makes about
-  // 43 kWh on a clear summer day.
-  var LOAD = [0.50,0.45,0.40,0.40,0.45,0.60,0.90,1.20,1.00,0.80,0.70,0.70,
-              0.75,0.80,0.90,1.10,1.60,2.20,2.60,2.40,2.00,1.50,1.00,0.70];
-  var SOLAR = [0,0,0,0,0,0.05,0.40,1.30,2.60,3.90,5.00,5.70,
-               5.90,5.60,4.90,3.80,2.50,1.30,0.45,0.05,0,0,0,0];
-  var CAP = 13.5, RATE = 5.0;          // kWh usable, kW charge/discharge limit
-
-  // Simulate the day rather than draw a shape by hand, so the picture and the
-  // table below it can never disagree.
-  var soc = 0, day = [];
-  for (var h = 0; h < 24; h++) {
-    var load = LOAD[h], sun = SOLAR[h];
-    var direct = Math.min(sun, load);
-    var surplus = sun - direct;
-    var charge = Math.min(surplus, CAP - soc, RATE);
-    soc += charge;
-    var deficit = load - direct;
-    var discharge = Math.min(deficit, soc, RATE);
-    soc -= discharge;
-    day.push({
-      h: h, load: load, solar: sun, direct: direct,
-      charge: charge, discharge: discharge,
-      grid: +(deficit - discharge).toFixed(3), soc: soc
-    });
-  }
+  // The day comes from model.js, shared with the power flow panel, so the
+  // two visuals can never disagree.
+  var M = window.SwitchModel;
+  var LOAD = M.LOAD, day = M.day;
 
   /* Geometry is chosen from the container width: a phone gets a squarer,
      taller chart so the curve is still readable at ~300px wide. */

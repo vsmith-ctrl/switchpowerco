@@ -1165,11 +1165,19 @@ a { color: inherit; }
   transition: opacity .35s ease;
   filter: drop-shadow(0 0 4px currentColor);
 }
-.flow[data-series="solar"]   { stroke: var(--s-solar);   color: var(--s-solar); }
-.flow[data-series="battery"] { stroke: var(--s-battery); color: var(--s-battery); }
-.flow[data-series="grid"]    { stroke: var(--s-grid);    color: var(--s-grid); }
-.flow.is-on { opacity: 1; animation: flow 1.6s linear infinite; }
-@keyframes flow { to { stroke-dashoffset: -22.01; } }
+/* Every stream is the brand lime: power on the move is the thing this
+   panel is about, and the ring on the node it leaves tells you the source.
+   The dots travel, and the whole stream breathes. */
+.flow { stroke: var(--volt); color: var(--volt); }
+.flow.is-on { opacity: 1; animation: flow 1.6s linear infinite, pulse 1.6s ease-in-out infinite; }
+@keyframes flow  { to { stroke-dashoffset: -22.01; } }
+@keyframes pulse {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(213,253,82,.55)); opacity: .82; }
+  50%      { filter: drop-shadow(0 0 10px rgba(213,253,82,.95)); opacity: 1; }
+}
+
+/* the kW riding each stream */
+.flow-kw { font-size: 14px; font-weight: 800; font-family: inherit; fill: var(--volt); paint-order: stroke; stroke: #000; stroke-width: 4px; stroke-linejoin: round; }
 
 .cut { transition: opacity .3s ease; }
 .cut__x { stroke: var(--paper); stroke-width: 3.5; stroke-linecap: round; }
@@ -1177,7 +1185,7 @@ a { color: inherit; }
 /* nodes */
 .node__halo { fill: none; opacity: 0; transition: opacity .4s ease; }
 .node__ring { fill: #000; stroke-width: 2.5; transition: stroke .3s ease, filter .3s ease; }
-.node[data-series="solar"]   .node__ring, .node[data-series="solar"]   .ic { stroke: var(--s-solar); }
+.node[data-series="solar"]   .node__ring, .node[data-series="solar"]   .ic { stroke: var(--volt); }
 .node[data-series="battery"] .node__ring, .node[data-series="battery"] .ic { stroke: var(--s-battery); }
 .node[data-series="grid"]    .node__ring, .node[data-series="grid"]    .ic { stroke: var(--s-grid); }
 .node[data-series="home"]    .node__ring, .node[data-series="home"]    .ic { stroke: var(--s-home); }
@@ -1205,8 +1213,9 @@ a { color: inherit; }
 @media (max-width: 40rem) {
   .node__val { font-size: 26px; }
   .node__lab { font-size: 22px; }
+  .flow-kw   { font-size: 22px; }
   .flow__controls { gap: .875rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .flow.is-on { animation: none; stroke-dasharray: 0.01 12; }
+  .flow.is-on { animation: none; stroke-dasharray: 0.01 12; opacity: 1; filter: drop-shadow(0 0 5px rgba(213,253,82,.7)); }
 }

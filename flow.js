@@ -20,25 +20,46 @@
   }
   function text(str, attrs, parent) { var t = el("text", attrs, parent); t.textContent = str; return t; }
 
-  /* ---------- scenarios: 1pm and 7pm from the modelled day ---------- */
-  var SCEN = {
-    day: {
-      on:  { solar: 5.6, home: 0.8, batt: 4.0, battPct: 62, battMode: "charging", grid: 0.8, gridMode: "selling",
-             s2h: 1, s2b: 1, s2g: 1, b2h: 0, g2h: 0,
-             status: "Midday, grid connected. The panels run the house, bank the surplus in the battery, and sell what is left to the grid." },
-      off: { solar: 5.6, home: 0.8, batt: 4.8, battPct: 62, battMode: "charging", grid: 0,   gridMode: "out",
-             s2h: 1, s2b: 1, s2g: 0, b2h: 0, g2h: 0,
-             status: "Midday, grid out. The house does not notice: panels keep running it and charging the battery. The only thing that stops is selling surplus." }
-    },
-    evening: {
-      on:  { solar: 0, home: 2.4, batt: 2.4, battPct: 74, battMode: "powering home", grid: 0, gridMode: "idle",
-             s2h: 0, s2b: 0, s2g: 0, b2h: 1, g2h: 0,
-             status: "7pm, grid connected, the most expensive hour of the day. The battery is carrying the house and nothing is being bought." },
-      off: { solar: 0, home: 2.4, batt: 2.4, battPct: 74, battMode: "powering home", grid: 0, gridMode: "out",
-             s2h: 0, s2b: 0, s2g: 0, b2h: 1, g2h: 0,
-             status: "7pm, grid out. Neighbours without a battery are in the dark. This house is running on what the panels banked at noon." }
+  /* ---------- scenarios, computed from model.js ----------
+     11am is the hour the battery is charging hardest with only a sliver
+     exported; 7pm is the priciest hour of the day. Grid-out cases keep the
+     same physics but export becomes curtailment and any import is lost. */
+  var M = window.SwitchModel;
+  var HOURS = { day: 11, evening: 19 };
+
+  // anything under 0.075 kW is noise at this scale and would print as "0.1"
+  function z(v) { return v < 0.075 ? 0 : v; }
+
+  function scenario(hour, gridOn) {
+    var r0 = M.day[hour];
+    var r = { load: r0.load, solar: z(r0.solar), direct: z(r0.direct), charge: z(r0.charge),
+              export: z(r0.export), discharge: z(r0.discharge), grid: z(r0.grid) };
+    var s = { s2h: r.direct, s2b: r.charge, b2h: r.discharge,
+              s2g: gridOn ? r.export : 0, g2h: gridOn ? r.grid : 0,
+              home: r.load, batt: r.charge > 0 ? r.charge : r.discharge,
+              // state of charge at the start of the hour, so "charging" pairs with room to charge
+              pct: Math.round(r0.socBefore / M.CAP * 100), gridOn: gridOn,
+              battMode: r.charge > 0.05 ? "charging" : r.discharge > 0.05 ? "powering home" : "idle",
+              curtailed: gridOn ? 0 : r.export };
+    s.solar = r.solar - s.curtailed;             // panels throttle what has nowhere to go
+    s.gridMode = !gridOn ? "out" : r.export > 0.05 ? "selling" : r.grid > 0.05 ? "buying" : "idle";
+    return s;
+  }
+  function kw(v) { return v.toFixed(1).replace(/\.0$/, "") + " kW"; }
+  function hr(h) { return (h % 12 || 12) + (h < 12 ? "am" : "pm"); }
+  function statusFor(hour, s) {
+    var t = hr(hour), parts = [];
+    if (s.s2h > 0.05) parts.push(kw(s.s2h) + " runs the house");
+    if (s.s2b > 0.05) parts.push(kw(s.s2b) + " charges the battery");
+    if (s.s2g > 0.05) parts.push(kw(s.s2g) + " is sold to the grid");
+    if (s.gridOn) {
+      if (s.solar > 0.05) return t + ": " + kw(s.solar) + " from the roof. " + parts.join(", ") + ".";
+      return t + ", the most expensive hour of the day. The battery delivers " + kw(s.b2h) + " and nothing is bought.";
     }
-  };
+    if (s.solar > 0.05) return t + ", grid out. The house does not notice: " + parts.join(", ") +
+      (s.curtailed > 0.05 ? ". The " + kw(s.curtailed) + " that had nowhere to go is simply not made." : ".");
+    return t + ", grid out. Neighbours without a battery are in the dark. This house is running on " + kw(s.b2h) + " the panels banked earlier.";
+  }
 
   /* ---------- geometry: a cross, lines meeting at a junction ----------
      Two layouts. A phone gets a portrait box with bigger nodes, since the
@@ -51,7 +72,7 @@
       : { W: 720, H: 600, R: 46, N: { solar: [360, 96], grid: [118, 300], home: [602, 300], battery: [360, 504] } };
   }
 
-  var G, N, R, J, flows = {}, cut, gridBus, nodes = {}, battFill;
+  var G, N, R, J, flows = {}, flowLabs = {}, cut, gridBus, nodes = {}, battFill;
 
   function build() {
     G = layout(); N = G.N; R = G.R; J = [N.solar[0], N.grid[1]];
@@ -83,6 +104,21 @@
       flows[k] = el("path", { d: P[k], class: "flow", "data-series": SERIES[k],
                               style: "animation-delay:" + (-i * 0.35) + "s" }, gF);
     });
+
+    // one kW label per stream, on the segment that belongs to it alone
+    var midX = (J[0] + right) / 2, midL = (left + J[0]) / 2, midY = (J[1] + bot) / 2, topY = (top + J[1]) / 2;
+    var LAB = {
+      s2h: [midX, gy - 14, "middle"],            // junction -> home (horizontal, above)
+      b2h: [midX, gy - 14, "middle"],            // same segment, never active at the same time
+      s2b: [sx + 16, midY, "start"],             // junction -> battery (vertical, right side)
+      s2g: [midL, gy - 14, "middle"],            // junction -> grid (horizontal, above)
+      g2h: [midL, gy - 14, "middle"]
+    };
+    flowLabs = {};
+    Object.keys(LAB).forEach(function (k) {
+      flowLabs[k] = text("", { x: LAB[k][0], y: LAB[k][1], class: "flow-kw", "text-anchor": LAB[k][2] }, gF);
+    });
+    void topY;
 
     // severed mark, midway between the grid node and the junction
     var cx = (left + J[0]) / 2;
@@ -133,31 +169,34 @@
   var gridCtl = document.getElementById("grid-ctl");
   var gridSw = document.getElementById("grid-switch");
   var gridState = document.getElementById("grid-state");
-  function kw(v) { return v.toFixed(1).replace(/\.0$/, "") + " kW"; }
 
   function render() {
-    var s = SCEN[timeKey][gridOn ? "on" : "off"];
-    Object.keys(flows).forEach(function (k) { flows[k].classList.toggle("is-on", !!s[k]); });
+    var hour = HOURS[timeKey], s = scenario(hour, gridOn);
+
+    Object.keys(flows).forEach(function (k) {
+      var on = s[k] > 0.05;
+      flows[k].classList.toggle("is-on", on);
+      flowLabs[k].textContent = on ? kw(s[k]) : "";
+    });
 
     nodes.solar.val.textContent = kw(s.solar);
     nodes.home.val.textContent = kw(s.home);
-    nodes.battery.val.textContent = kw(s.batt) + " · " + s.battPct + "%";
-    nodes.battery.lab.textContent = "Battery · " + s.battMode;
-    nodes.grid.val.textContent = gridOn ? kw(s.grid) : "Out";
-    nodes.grid.lab.textContent = "Grid · " + s.gridMode;
+    nodes.battery.val.textContent = kw(s.batt) + " \u00b7 " + s.pct + "%";
+    nodes.battery.lab.textContent = "Battery \u00b7 " + s.battMode;
+    nodes.grid.val.textContent = !gridOn ? "Out" : s.s2g > 0.05 ? kw(s.s2g) : s.g2h > 0.05 ? kw(s.g2h) : "0 kW";
+    nodes.grid.lab.textContent = "Grid \u00b7 " + s.gridMode;
 
-    // battery fill height tracks the percentage; the y is anchored to the bottom of the cell
-    var hgt = Math.round(22 * s.battPct / 100);
+    var hgt = Math.round(22 * s.pct / 100);
     battFill.setAttribute("height", hgt);
     battFill.setAttribute("y", 11 - hgt);
 
     nodes.grid.g.classList.toggle("is-out", !gridOn);
-    nodes.solar.g.classList.toggle("is-idle", s.solar === 0);
-    nodes.home.g.classList.add("is-lit");                    // always. That is the point.
+    nodes.solar.g.classList.toggle("is-idle", s.solar < 0.05);
+    nodes.home.g.classList.add("is-lit");
     cut.setAttribute("opacity", gridOn ? 0 : 1);
     gridBus.classList.toggle("is-cut", !gridOn);
 
-    status.textContent = s.status;
+    status.textContent = statusFor(hour, s);
     gridCtl.classList.toggle("is-on", gridOn);
     gridSw.setAttribute("aria-checked", String(gridOn));
     gridState.textContent = gridOn ? "Connected" : "Out";

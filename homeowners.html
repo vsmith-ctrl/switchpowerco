@@ -282,8 +282,8 @@
           <figure class="viz viz--screen" id="flow">
             <div class="flow__controls">
               <div class="seg" role="group" aria-label="Time of day">
-                <button type="button" class="seg__btn is-on" data-time="day" aria-pressed="true">Midday</button>
-                <button type="button" class="seg__btn" data-time="evening" aria-pressed="false">Evening peak</button>
+                <button type="button" class="seg__btn is-on" data-time="day" aria-pressed="true">11am</button>
+                <button type="button" class="seg__btn" data-time="evening" aria-pressed="false">7pm peak</button>
               </div>
               <div class="gsw is-on" id="grid-ctl">
                 <span class="gsw__lab">Grid</span>
@@ -299,7 +299,7 @@
 
             <p class="flow__status" id="flow-status" aria-live="polite"></p>
 
-            <p class="viz__note">Flows are illustrative and rounded, drawn from the same modelled day as the chart further down. <strong>Your system’s numbers depend on the scope of work and your sun exposure.</strong> One thing is not illustrative: a solar system without a battery shuts off when the grid does. The battery is what keeps the lights on.</p>
+            <p class="viz__note">Every figure on this panel is computed from the same modelled day as the chart further down — the 11am and 7pm hours — and each stream is labelled with its own kW, so the numbers add up by construction. <strong>Your system’s numbers depend on the scope of work and your sun exposure.</strong> One thing is not illustrative: a solar system without a battery shuts off when the grid does. The battery is what keeps the lights on.</p>
           </figure>
         </li>
         <li class="tenet">
@@ -525,6 +525,7 @@
   </div>
 </footer>
 
+<script src="model.js"></script>
 <script src="main.js"></script>
 <script src="charts.js"></script>
 <script src="flow.js"></script>

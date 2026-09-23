@@ -154,6 +154,9 @@ The SMUD battery incentive dropped from $500/kWh (up to $10,000) to $300/kWh (up
 on 23 September 2026. It has stepped down before and will again. Treat that row as the one
 most likely to be wrong.
 
+The modelled day (household, solar output, 13.5 kWh battery, 5 kW rate) lives in `model.js`
+and feeds both the day chart and the power flow panel.
+
 Deliberately **not** on the page: any projected savings figure, payback period, or income
 claim. Those are the numbers that create liability, and they belong in a proposal built from
 a specific customer's bill, not on a public page.
@@ -164,9 +167,16 @@ a specific customer's bill, not on a public page.
 nodes (solar, grid, home, battery) with each node's kW inside it, dots streaming along a bus,
 a midday / evening-peak control, and the brand's switch component to turn the grid off.
 
-The values are the **1pm and 7pm hours of the same modelled day as the chart** in `charts.js`,
-so the two visuals cannot disagree. If the day model changes, update the four scenarios at the
-top of `flow.js` to match.
+There are no typed-in numbers. `model.js` simulates the day once and both `charts.js` and
+`flow.js` read from it, so the chart, its table and the panel cannot disagree. The panel uses
+the **11am** hour (battery charging hardest, a sliver exported) and the **7pm** hour (the
+priciest, battery carrying the house), set as `HOURS` at the top of `flow.js`. Each stream is
+labelled with its own kW, and the status line is assembled from the same values, so the
+arithmetic on screen adds up by construction. State of charge is shown at the start of the
+hour. To change the household, the system or the battery, edit `model.js` only.
+
+The streams are the brand lime, pulsing — power on the move is what the panel is about. The
+source is still unambiguous: the ring colour on the node a stream leaves, plus its kW label.
 
 Switching the grid off is the point of the panel: the grid node dims, the line is severed,
 export stops, and nothing else changes. Keep it that way — the message is that a battery keeps
