@@ -82,6 +82,16 @@ information we then hold in a mailbox.
 **If anyone later adds a form, a chat widget, an embedded map or video, a tracking pixel or
 an analytics tag, the privacy page stops being accurate.** Update it in the same change.
 
+To re-check, grep for external origins in `src=`, `href=`, `url()` and `fetch(`/`XMLHttpRequest`:
+
+```bash
+grep -nE '(src|href)="https?://|url\("?https?://|fetch\(|XMLHttpRequest' *.html *.css *.js | grep -v switchpowerco.com
+```
+
+That should print nothing. A bare grep for `http://` will also match `http://www.w3.org/2000/svg`
+in `charts.js` — that is the SVG XML namespace handed to `createElementNS`, an identifier the
+browser never fetches, not a request.
+
 ### Still needs a lawyer
 
 The website's data handling is clean. These are separate questions about operating a
