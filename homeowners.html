@@ -82,7 +82,7 @@
       <h3 class="sub-h">A PG&amp;E bill, split in two</h3>
       <div class="table-scroll" tabindex="0" role="region" aria-label="Where a PG and E residential bill goes">
         <table class="table table--ink">
-          <caption class="table__caption">Residential E-TOU-C, as of March 2026</caption>
+          <caption class="table__caption">Residential E-TOU-C, summer peak 4&ndash;9pm, above-baseline usage. PG&amp;E tariff effective 1 June 2026</caption>
           <thead>
             <tr>
               <th scope="col">Part of the bill</th>
@@ -94,23 +94,23 @@
             <tr>
               <th scope="row">Generation</th>
               <td>The electricity itself, the part someone actually produced</td>
-              <td>About <span class="count" data-count-to="12">12</span>&cent; per kWh</td>
+              <td>About <span class="count" data-count-to="21">21</span>&cent; per kWh</td>
             </tr>
             <tr>
               <th scope="row">Delivery</th>
-              <td>Poles, wires, maintenance, wildfire costs and public programs</td>
-              <td>About <span class="count" data-count-to="30">30</span>&cent; per kWh</td>
+              <td>Distribution, transmission, wildfire costs, public programs and adjustments &mdash; everything that is not the electricity itself</td>
+              <td>About <span class="count" data-count-to="31">31</span>&cent; per kWh</td>
             </tr>
             <tr>
               <th scope="row">What you pay</th>
-              <td>The two added together, before time-of-use pricing moves it</td>
-              <td>About <span class="count" data-count-to="41">41</span>&cent; per kWh</td>
+              <td>The two added together. This is the all-in rate on your bill for peak-hour usage in summer</td>
+              <td>About <span class="count" data-count-to="52">52</span>&cent; per kWh</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <p class="lede lede--ink">Generation is under a third of it. Delivery is the rest. That single fact explains a lot of things that otherwise look strange.</p>
+      <p class="lede lede--ink">Even at peak, when generation is at its most expensive, it is only about 40% of the rate. Delivery is the rest. Off-peak the split is more lopsided still: generation drops to around 10&cent; while delivery barely moves. That single fact explains a lot of things that otherwise look strange.</p>
 
       <dl class="rhythm">
         <div class="rhythm__row">
@@ -123,11 +123,59 @@
         </div>
         <div class="rhythm__row">
           <dt>Why the evening is where the money is</dt>
-          <dd>On time-of-use plans, summer weekday evenings between 4pm and 9pm run substantially higher than the average — commonly in the range of 45 to 50&cent; per kWh in peak season. That is also when your house uses the most and your panels have stopped producing. It is the single most expensive gap in your day.</dd>
+          <dd>On PG&amp;E's time-of-use plan, every day from 4pm to 9pm in summer is billed at the peak rate: 52.2&cent; per kWh on the current sheet, against 39.9&cent; off-peak. That is also when your house uses the most and your panels have stopped producing. It is the single most expensive gap in your day.</dd>
         </div>
       </dl>
 
-      <p class="fineprint fineprint--ink">Figures are approximate, drawn from PG&amp;E's residential E-TOU-C schedule as of March 2026. Your own rate depends on your plan, your climate zone and whether a CCA supplies your generation. Rates change. We will read your actual bill rather than quote you an average.</p>
+      <figure class="viz viz--rates" id="viz-rates">
+        <figcaption class="viz__title">What a kilowatt-hour costs you</figcaption>
+        <p class="viz__sub">PG&amp;E total bundled rates &mdash; generation and delivery combined, exactly as billed &mdash; from the tariff sheet effective 1 June 2026, set against a blended solar and battery rate.</p>
+
+        <div class="viz__legend">
+          <span class="key"><i class="key__sw" data-series="grid"></i>Grid</span>
+          <span class="key"><i class="key__sw" data-series="solar"></i>Solar + battery</span>
+        </div>
+
+        <div class="bars" role="img" aria-label="Bar chart comparing grid electricity rates with a blended solar and battery rate. Grid summer peak about 52 cents, grid summer off-peak about 40 cents, grid winter off-peak about 37 cents, solar and battery about 28 cents per kilowatt-hour.">
+          <div class="bar" data-series="grid"  data-value="52" data-max="60">
+            <span class="bar__label">Summer peak <span class="bar__note">4&ndash;9pm, every day, June to September</span></span>
+            <span class="bar__track"><span class="bar__fill"></span><span class="bar__val">52&cent;</span></span>
+          </div>
+          <div class="bar" data-series="grid"  data-value="40" data-max="60">
+            <span class="bar__label">Summer off-peak <span class="bar__note">all other summer hours</span></span>
+            <span class="bar__track"><span class="bar__fill"></span><span class="bar__val">40&cent;</span></span>
+          </div>
+          <div class="bar" data-series="grid"  data-value="37" data-max="60">
+            <span class="bar__label">Winter off-peak <span class="bar__note">the cheapest hours PG&amp;E sells</span></span>
+            <span class="bar__track"><span class="bar__fill"></span><span class="bar__val">37&cent;</span></span>
+          </div>
+          <div class="bar" data-series="solar" data-value="28" data-max="60">
+            <span class="bar__label">Solar + battery <span class="bar__note">blended, prepaid lease or PPA</span></span>
+            <span class="bar__track"><span class="bar__fill"></span><span class="bar__val">28&cent;</span></span>
+          </div>
+        </div>
+
+        <p class="viz__delta"><span class="viz__delta-n"><span class="count" data-count-to="24">24</span>&cent;</span>
+          <span class="viz__delta-t">lower per kilowatt-hour than the grid at peak, which is exactly when a house uses the most.</span></p>
+
+        <details class="viz__data">
+          <summary>See these figures as a table</summary>
+          <table class="table table--ink">
+            <thead><tr><th scope="col">Rate</th><th scope="col">Cents per kWh</th><th scope="col">Where it comes from</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Grid, summer peak (4&ndash;9pm)</th><td>52.2</td><td>generation 20.8 + delivery 31.5</td></tr>
+              <tr><th scope="row">Grid, summer off-peak</th><td>39.9</td><td>generation 10.5 + delivery 29.5</td></tr>
+              <tr><th scope="row">Grid, winter peak (4&ndash;9pm)</th><td>39.8</td><td>generation 13.7 + delivery 26.1</td></tr>
+              <tr><th scope="row">Grid, winter off-peak</th><td>36.8</td><td>generation 11.0 + delivery 25.7</td></tr>
+              <tr><th scope="row">Solar + battery, blended</th><td>about 28</td><td>varies by scope of work and sun exposure</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <p class="viz__note">The blended solar and battery figure is around 28&cent; per kWh. <strong>Your actual rate varies with the scope of work and how much sun your roof gets</strong> — shading, orientation, roof condition and the size of system your usage calls for all move it. We quote the real number for your address, not this one.</p>
+      </figure>
+
+      <p class="fineprint fineprint--ink">Figures are taken from PG&amp;E's official E-TOU-C rate schedule effective 1 June 2026, total bundled rates. Usage inside your baseline allowance gets a credit of about 8&cent; per kWh; most homes running air conditioning are over baseline in summer, which is why the full rate is shown. There is also a fixed base services charge of roughly $24 a month for most households that solar does not remove. Your own rate depends on your plan, your climate zone and whether a CCA supplies your generation. Rates change. We will read your actual bill rather than quote you an average.</p>
     </div>
   </section>
 
@@ -238,6 +286,35 @@
     <div class="wrap">
       <h2 class="h2">Where the savings actually come from</h2>
       <p class="lede lede--ink">Nobody can tell you what you'll save from the sidewalk. What we can tell you is the four places the money comes from, so you can judge any proposal — ours or anyone else's — on whether it accounts for them.</p>
+
+      <figure class="viz viz--day" id="viz-day">
+        <figcaption class="viz__title">One day, hour by hour</figcaption>
+        <p class="viz__sub">What a system actually does across a summer day in Northern California. The shaded areas are how each hour of your usage gets met.</p>
+
+        <div class="viz__legend">
+          <span class="key"><i class="key__sw" data-series="solar"></i>Solar, used as it is made</span>
+          <span class="key"><i class="key__sw key__sw--charge"></i>Surplus charging the battery</span>
+          <span class="key"><i class="key__sw" data-series="battery"></i>Battery discharging</span>
+          <span class="key"><i class="key__sw" data-series="grid"></i>Bought from the grid</span>
+          <span class="key"><i class="key__sw key__sw--line"></i>Your usage</span>
+        </div>
+
+        <div class="chart-wrap">
+          <svg class="chart" id="day-chart" viewBox="0 0 900 420" preserveAspectRatio="xMidYMid meet" role="img"
+               aria-label="Area chart of one summer day. Solar covers daytime usage and charges the battery around midday. The battery discharges through the 4 to 9pm peak, so almost nothing is bought from the grid. A small grid import remains in the early morning.">
+          </svg>
+          <div class="chart__tip" id="day-tip" hidden></div>
+        </div>
+
+        <details class="viz__data">
+          <summary>See this day as a table</summary>
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Hourly table of the modelled day">
+            <table class="table table--ink" id="day-table"></table>
+          </div>
+        </details>
+
+        <p class="viz__note">A model, not a promise. It assumes a system sized for a household using about 26 kWh a day, a 13.5 kWh battery, and a clear summer day. <strong>Yours depends on the scope of work and your sun exposure.</strong> The shape is what matters: solar carries the day, the battery carries the expensive evening, and the grid fills a small gap before sunrise.</p>
+      </figure>
 
       <ol class="steps">
         <li class="step">
@@ -420,5 +497,6 @@
 </footer>
 
 <script src="main.js"></script>
+<script src="charts.js"></script>
 </body>
 </html>

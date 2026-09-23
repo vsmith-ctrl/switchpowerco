@@ -127,11 +127,18 @@ them, update the "as of" line in the same edit — a dated wrong number is worse
 
 | What | Value on the page | Source | Review |
 | --- | --- | --- | --- |
-| PG&E residential split | ~12¢ generation, ~30¢ delivery, ~41¢ total (E-TOU-C, Mar 2026) | PG&E tariff sheets | Each PG&E rate change |
-| PG&E summer peak | ~45–50¢/kWh, 4–9pm Jun–Sep | PG&E tariff sheets | Each PG&E rate change |
+| PG&E summer peak, total bundled | 52.24¢ = 20.78¢ generation + 31.46¢ delivery (E-TOU-C, over-baseline) | PG&E E-TOU-C tariff, Cal. P.U.C. Sheet 61364-E, effective 1 Jun 2026 | Each PG&E rate change |
+| PG&E summer off-peak / winter peak / winter off-peak | 39.94¢ / 39.76¢ / 36.76¢ total bundled | Same sheet | Each PG&E rate change |
+| PG&E baseline credit | −8.14¢/kWh on baseline usage only | Same sheet | Each PG&E rate change |
+| PG&E base services charge | $0.79343/day (Income Tier 3, most households) ≈ $24/mo, not removed by solar | Same sheet | Each PG&E rate change |
 | SMUD export compensation | 9.6¢/kWh from 1 Jun 2026 (was 7.4¢) | SMUD Solar and Storage Rate | SMUD reviews every 4 years, capped ±30% |
 | SMUD battery incentive | $300/kWh, up to $6,000, from 23 Sep 2026 | SMUD My Energy Optimizer Partner+ | **Steps down periodically — check often** |
 | Federal tax credit | 25D ended 31 Dec 2025; 48E runs to end of 2027 | Public law, July 2025 | Any tax legislation |
+
+The PG&E figures are read directly from the official tariff PDF at
+`https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-TOU-C.pdf`. When PG&E
+re-issues it, the "(R)" markers show which lines were revised. Re-derive generation vs
+delivery from the unbundling table on sheet 3, not from a third-party summary.
 
 The SMUD battery incentive dropped from $500/kWh (up to $10,000) to $300/kWh (up to $6,000)
 on 23 September 2026. It has stepped down before and will again. Treat that row as the one

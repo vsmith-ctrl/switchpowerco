@@ -918,3 +918,183 @@ a { color: inherit; }
   .slab--paper .rhythm__row:hover { box-shadow: none; }
   .step:hover .step__n { text-shadow: none; }
 }
+
+/* ============================================================
+   CHARTS
+   Series palette validated for a dark surface, all-pairs:
+   worst CVD dE 10.7, normal-vision 26.5, all >= 3:1 on black.
+   Identity is never colour-alone: every series is legended and
+   the areas are direct-labelled.
+   ============================================================ */
+
+.viz {
+  --s-solar:   #7E9C18;
+  --s-battery: #3987e5;
+  --s-grid:    #d55181;
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+  padding: clamp(1.5rem, 3.5vw, 2.25rem);
+  border: 1px solid var(--hair-ink);
+  background: rgba(255,255,255,.02);
+}
+.viz__title {
+  font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  margin: 0 0 .5rem;
+  color: var(--paper);
+}
+.viz__sub { margin: 0 0 1.5rem; color: var(--grey-ink); font-size: 1rem; max-width: 58ch; }
+
+.viz__legend { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-bottom: 1.5rem; }
+.key { display: inline-flex; align-items: center; gap: .5rem; font-size: .9375rem; color: var(--grey-ink); }
+.key__sw { width: 14px; height: 14px; border-radius: 3px; flex: none; }
+.key__sw[data-series="solar"]   { background: var(--s-solar); }
+.key__sw[data-series="battery"] { background: var(--s-battery); }
+.key__sw[data-series="grid"]    { background: var(--s-grid); }
+.key__sw--line { height: 0; border-top: 2px dashed var(--paper); border-radius: 0; }
+
+/* ---------- bars ---------- */
+
+.bars { display: grid; gap: 1.125rem; }
+.bar { display: grid; gap: .375rem; }
+.bar__label { font-size: .9375rem; font-weight: 800; color: var(--paper); }
+.bar__note { font-weight: 400; color: var(--grey-ink); }
+.bar__track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+  height: 30px;
+}
+.bar__fill {
+  height: 100%;
+  width: 0;
+  border-radius: 0 4px 4px 0;      /* rounded data-end, anchored to baseline */
+  transition: width 1s cubic-bezier(.25,.8,.25,1);
+}
+.bar[data-series="grid"]  .bar__fill { background: var(--s-grid); }
+.bar[data-series="solar"] .bar__fill { background: var(--s-solar); box-shadow: 0 0 26px rgba(126,156,24,.5); }
+.bar__val { font-weight: 800; font-size: 1.0625rem; color: var(--paper); font-variant-numeric: tabular-nums; }
+
+.viz__delta {
+  display: flex;
+  align-items: baseline;
+  gap: .875rem;
+  flex-wrap: wrap;
+  margin: 2rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--hair-ink);
+}
+.viz__delta-n {
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  color: var(--volt);
+  line-height: 1;
+}
+.viz__delta-t { color: var(--grey-ink); max-width: 44ch; }
+
+/* ---------- svg day chart ---------- */
+
+.chart-wrap { position: relative; }
+.chart { width: 100%; height: auto; display: block; overflow: visible; touch-action: pan-y; }
+
+.ax__grid { stroke: rgba(255,255,255,.12); stroke-width: 1; }
+.ax__lab  { fill: #A3A3A3; font-size: 13px; font-family: inherit; }
+
+.peak-band { fill: rgba(213,253,82,.055); }
+.peak-lab  { fill: rgba(213,253,82,.75); font-size: 12px; font-weight: 800; font-family: inherit; }
+
+.area { stroke: #000; stroke-width: 2; }     /* 2px surface gap between fills */
+.area[data-series="solar"]   { fill: var(--s-solar); }
+.area[data-series="battery"] { fill: var(--s-battery); }
+.area[data-series="grid"]    { fill: var(--s-grid); }
+
+.prod-line {
+  fill: none;
+  stroke: var(--s-solar);
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+  opacity: .85;
+}
+.load-line { fill: none; stroke: #fff; stroke-width: 2; stroke-linejoin: round; }
+
+.note { font-size: 12.5px; font-weight: 800; font-family: inherit; }
+.note--solar { fill: #A8CC2E; }
+.note--load  { fill: #fff; }
+.note--batt  { fill: #7FB4F2; }
+
+.cross { stroke: rgba(255,255,255,.45); stroke-width: 1; stroke-dasharray: 3 3; }
+.cross-dot { fill: #fff; stroke: #000; stroke-width: 2; }
+
+.chart__tip {
+  position: absolute;
+  top: 8px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: #0d0d0d;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px;
+  padding: .625rem .75rem;
+  font-size: .8125rem;
+  color: var(--paper);
+  min-width: 170px;
+  box-shadow: 0 12px 34px rgba(0,0,0,.65);
+  z-index: 3;
+}
+.chart__tip strong { display: block; margin-bottom: .375rem; font-size: .9375rem; }
+.chart__tip span { display: flex; align-items: center; gap: .5rem; padding: .125rem 0; color: #C9C9C9; }
+.chart__tip b { margin-left: auto; color: #fff; font-variant-numeric: tabular-nums; }
+.chart__tip i { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.chart__tip i[data-series="solar"]   { background: var(--s-solar); }
+.chart__tip i[data-series="battery"] { background: var(--s-battery); }
+.chart__tip i[data-series="grid"]    { background: var(--s-grid); }
+.tip__tot { border-top: 1px solid rgba(255,255,255,.18); margin-top: .375rem; padding-top: .375rem !important; }
+
+/* ---------- table view + caveat ---------- */
+
+.viz__data { margin-top: 1.75rem; }
+.viz__data summary {
+  cursor: pointer;
+  font-size: .9375rem;
+  font-weight: 800;
+  color: var(--grey-ink);
+  padding: .5rem 0;
+}
+.viz__data summary:hover { color: var(--volt); }
+.viz__data .table { min-width: 34rem; margin-top: .75rem; }
+
+.viz__note {
+  margin: 1.75rem 0 0;
+  font-size: .9375rem;
+  line-height: 1.65;
+  color: var(--grey-ink);
+  max-width: 64ch;
+  border-left: 3px solid var(--s-solar);
+  padding-left: 1rem;
+}
+.viz__note strong { color: var(--paper); font-weight: 800; }
+
+@media (max-width: 40rem) {
+  .viz { padding: 1.125rem; }
+  /* The viewBox is 900 wide and renders at about 335px on a phone, so text
+     is scaled to roughly 0.37. These sizes are chosen to land near 10px on
+     screen, not to look sensible in the source. */
+  .ax__lab  { font-size: 26px; }
+  .peak-lab { font-size: 22px; }
+  /* In-chart labels collide badly at this scale. The legend and the table
+     view carry identity instead. */
+  .note { display: none; }
+  .viz__legend { gap: .5rem 1rem; }
+  .key { font-size: .875rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar__fill { transition: none; }
+}
+
+/* surplus solar banked into the battery */
+.charge-area { fill: var(--s-battery); opacity: .22; }
+.key__sw--charge { background: var(--s-battery); opacity: .34; }
+/* the usage line is solid white in the chart, so its swatch must be too */
+.key__sw--line { height: 0; border-top: 2px solid var(--paper); border-radius: 0; }
