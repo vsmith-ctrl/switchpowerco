@@ -82,7 +82,23 @@ information we then hold in a mailbox.
 **If anyone later adds a form, a chat widget, an embedded map or video, a tracking pixel or
 an analytics tag, the privacy page stops being accurate.** Update it in the same change.
 
-To re-check, grep for external origins in `src=`, `href=`, `url()` and `fetch(`/`XMLHttpRequest`:
+`scripts/privacy-check.sh` enforces all of this. It runs in GitHub Actions on every push and
+pull request, and monthly on a schedule. It fails if any page loads something from another
+origin, adds a form, cookie, storage or network call, drops the footer link to `privacy.html`,
+if the privacy page loses its Do Not Track / Global Privacy Control, change-notice or no-sale
+sections, or if its "Last updated" date is more than a year old. A red run is the reminder to
+review the page; bump the date only after actually reviewing it.
+
+```bash
+bash scripts/privacy-check.sh
+```
+
+The privacy page discloses the three kinds of email people are invited to send (a question,
+a utility bill with address, a job enquiry), that a bill may go to Continuum to prepare the
+numbers, how long emails are kept, and a short notice sits beside each email button. If a new
+call to action asks people to send something else, add it to both places.
+
+To re-check by hand, grep for external origins in `src=`, `href=`, `url()` and `fetch(`/`XMLHttpRequest`:
 
 ```bash
 grep -nE '(src|href)="https?://|url\("?https?://|fetch\(|XMLHttpRequest' *.html *.css *.js | grep -v switchpowerco.com

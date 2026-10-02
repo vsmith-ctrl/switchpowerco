@@ -659,7 +659,8 @@ a { color: inherit; }
 
 /* prose that follows a split block needs its own top margin, since the
    .lede + .lede adjacency no longer applies across it */
-.compare + .lede { margin-top: clamp(2rem, 4vw, 2.75rem); }
+.compare + .lede,
+.tenets + .lede { margin-top: clamp(2rem, 4vw, 2.75rem); }
 
 
 .inline-link {
@@ -691,6 +692,7 @@ a { color: inherit; }
 
 .inline-link--ink { border-bottom-color: var(--volt); }
 .inline-link--ink:hover { border-bottom-color: var(--paper); }
+.inline-link--volt { border-bottom-color: currentColor; }
 
 /* four options rather than three, so give the columns room to breathe */
 .table { min-width: 40rem; }

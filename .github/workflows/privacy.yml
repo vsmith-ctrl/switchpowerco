@@ -1,0 +1,20 @@
+name: Privacy check
+
+on:
+  push:
+  pull_request:
+  schedule:
+    # Monthly, so a privacy page that has gone more than a year without review
+    # turns red even when nobody is pushing.
+    - cron: "0 16 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/privacy-check.sh
