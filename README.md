@@ -20,9 +20,9 @@ These are the placeholders left in the code. Search for `TODO` to find them all 
 
 ### Must fix — the site is wrong without these
 
-- [ ] **Phone number.** There is no number yet, so the "Text us" / "Call or text" buttons
-      have been removed rather than left as dead links. A commented-out button sits in the
-      call-to-action block on each page — uncomment and fill in the number when there is one.
+- [x] **Phone number.** (916) 244-7537. "Text us" (`sms:`) on the recruiting page and
+      "Call or text" (`tel:`) on the homeowners page, beside the email buttons. `privacy.html`
+      covers what people text or tell us on a call.
 - [x] **Email addresses.** `careers@switchpowerco.com` for people who want to sell for us
       (recruiting page), `info@switchpowerco.com` for everything else (homeowners page).
       Both mailboxes need to exist at the domain and be monitored.
